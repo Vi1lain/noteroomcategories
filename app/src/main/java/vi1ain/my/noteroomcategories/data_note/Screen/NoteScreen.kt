@@ -54,7 +54,6 @@ fun NoteScreen(
             colors = TopAppBarDefaults.topAppBarColors(containerColor = LightGreen220),
             navigationIcon = {
                 IconButton(onClick = {
-                    //myViewModel.categoryItemId = -1
                     navController.popBackStack(
                         route = Route.LIST_CATEGORIES,
                         inclusive = false
@@ -68,7 +67,7 @@ fun NoteScreen(
             },
             title = {
                 Text(
-                    text = "Title", maxLines = 1,
+                    text = myViewModel.nameCategory, maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
             },

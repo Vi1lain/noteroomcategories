@@ -48,6 +48,7 @@ fun CardScreen(
     Card(
         modifier = Modifier
             .clickable {
+                myViewModel.nameCategory = categoryItem.categoryName
                 myViewModel.categoryItemId = categoryItem.id!!
                 navController.navigate(Route.LIST_NOTES + "/${categoryItem.id}")
             }

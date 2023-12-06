@@ -16,10 +16,11 @@ class MyViewModel(val myDatabase: MyDatabase) : ViewModel() {
     // ===================лист категорий=========================
     val categoryList = myDatabase.categoryDao.getAllCategories()
     var categoryItemId =-1
+    var nameCategory ="Title"
     // ===================лист записей===========================
 
 
-    //==================entity котегории ========================
+    //=========================entity============================
     var categoryCheckItem: CategoriesEntity? = null
     var noteCheckItem: NoteEntity? = null
 

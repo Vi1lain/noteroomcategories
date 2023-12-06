@@ -24,7 +24,7 @@ import vi1ain.my.noteroomcategories.ui.theme.While220
 
 
 @Composable
-fun CardNoteScreen(noteItem: NoteEntity) {
+fun CardNoteScreen(noteItem: NoteEntity,onClickDelete:(NoteEntity)->Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -63,7 +63,7 @@ fun CardNoteScreen(noteItem: NoteEntity) {
 
 
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = {onClickDelete(noteItem)}) {
                 Icon(
                     tint = Red220,
                     imageVector = Icons.Default.Delete,

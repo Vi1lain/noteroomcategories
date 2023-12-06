@@ -21,9 +21,16 @@ fun MainNavigation(myViewModel: MyViewModel = viewModel(factory = MyViewModel.fa
                 navController = navController
             )
         }
-        composable(route = "${Route.LIST_NOTES}/{categoryItem.id}",
-            arguments = listOf(navArgument("categoryItem.id"){type = NavType.IntType})
-        ) {backStackEntry-> NoteScreen(backStackEntry.arguments?.getInt("categoryItem.id")?:-1,navController=navController,myViewModel=myViewModel)}
+        composable(
+            route = "${Route.LIST_NOTES}/{categoryItem.id}",
+            arguments = listOf(navArgument("categoryItem.id") { type = NavType.IntType })
+        ) { backStackEntry ->
+            NoteScreen(
+                backStackEntry.arguments?.getInt("categoryItem.id") ?: -1,
+                navController = navController,
+                myViewModel = myViewModel
+            )
+        }
         //composable(route = Route.EDIT_NOTE) {}
     }
 

@@ -37,9 +37,8 @@ fun NoteScreen(
     navController: NavHostController,
     myViewModel: MyViewModel
 ) {
+    val noteList = myViewModel.myDatabase.noteDao.getAllNotesById(newID).collectAsState(initial = emptyList())
 
-    val noteList1 = myViewModel.myDatabase.noteDao.getAllNotesById(newID)
-    val noteList = noteList1.collectAsState(initial = emptyList())
     if (myViewModel.dialogState) {
         DialogController(
             myViewModel = myViewModel,
@@ -85,6 +84,6 @@ fun NoteScreen(
                 .fillMaxSize()
                 .background(color = LightGreen220),
             contentPadding = PaddingValues(bottom = 80.dp, top = 70.dp),
-            content = { items(noteList.value) {noteItem-> CardNoteScreen(noteItem=noteItem) } })
+            content = { items(noteList.value) {noteItem-> CardNoteScreen(noteItem=noteItem, onClickDelete = {note ->myViewModel.deleteNote(note)}) } })
     }
 }

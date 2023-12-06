@@ -63,6 +63,9 @@ class MyViewModel(val myDatabase: MyDatabase) : ViewModel() {
     fun deleteAllNotes(categoryEntity: CategoriesEntity) = viewModelScope.launch {
         myDatabase.categoryDao.deleteAllNotes(categoryEntity = categoryEntity)
     }
+    fun deleteNote(noteEntity: NoteEntity) = viewModelScope.launch {
+        myDatabase.noteDao.deleteNotes(noteEntity = noteEntity)
+    }
 
 
     companion object {

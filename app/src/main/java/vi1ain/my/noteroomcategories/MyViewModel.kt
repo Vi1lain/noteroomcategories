@@ -15,9 +15,9 @@ import vi1ain.my.noteroomcategories.data_note.NoteEntity
 class MyViewModel(val myDatabase: MyDatabase) : ViewModel() {
     // ===================лист категорий=========================
     val categoryList = myDatabase.categoryDao.getAllCategories()
-    var categoryItemId:Int = -1
+    var categoryItemId =-1
     // ===================лист записей===========================
-    val noteList = myDatabase.noteDao.getAllNotesById(categoryItemId)
+
 
     //==================entity котегории ========================
     var categoryCheckItem: CategoriesEntity? = null

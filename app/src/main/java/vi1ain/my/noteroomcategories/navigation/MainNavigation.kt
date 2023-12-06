@@ -2,9 +2,11 @@ package vi1ain.my.noteroomcategories.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import vi1ain.my.noteroomcategories.MyViewModel
 import vi1ain.my.noteroomcategories.data_categories.Screen.CategoriesScreen
 import vi1ain.my.noteroomcategories.data_note.Screen.NoteScreen
@@ -19,7 +21,9 @@ fun MainNavigation(myViewModel: MyViewModel = viewModel(factory = MyViewModel.fa
                 navController = navController
             )
         }
-        composable(route = Route.LIST_NOTES) {NoteScreen(navController=navController,myViewModel=myViewModel)}
+        composable(route = "${Route.LIST_NOTES}/{categoryItem.id}",
+            arguments = listOf(navArgument("categoryItem.id"){type = NavType.IntType})
+        ) {backStackEntry-> NoteScreen(backStackEntry.arguments?.getInt("categoryItem.id")?:-1,navController=navController,myViewModel=myViewModel)}
         //composable(route = Route.EDIT_NOTE) {}
     }
 

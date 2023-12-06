@@ -33,11 +33,13 @@ import vi1ain.my.noteroomcategories.ui.theme.MyStrings
 
 @Composable
 fun NoteScreen(
+    newID: Int,
     navController: NavHostController,
     myViewModel: MyViewModel
 ) {
 
-    val noteList = myViewModel.noteList.collectAsState(initial = emptyList())
+    val noteList1 = myViewModel.myDatabase.noteDao.getAllNotesById(newID)
+    val noteList = noteList1.collectAsState(initial = emptyList())
     if (myViewModel.dialogState) {
         DialogController(
             myViewModel = myViewModel,
@@ -53,7 +55,7 @@ fun NoteScreen(
             colors = TopAppBarDefaults.topAppBarColors(containerColor = LightGreen220),
             navigationIcon = {
                 IconButton(onClick = {
-                    myViewModel.categoryItemId = -1
+                    //myViewModel.categoryItemId = -1
                     navController.popBackStack(
                         route = Route.LIST_CATEGORIES,
                         inclusive = false

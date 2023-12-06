@@ -1,4 +1,4 @@
-package vi1ain.my.noteroomcategories.data_categories
+package vi1ain.my.noteroomcategories
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,18 +9,25 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import kotlinx.coroutines.launch
-import vi1ain.my.noteroomcategories.App
-import vi1ain.my.noteroomcategories.MyDatabase
+import vi1ain.my.noteroomcategories.data_categories.CategoriesEntity
+import vi1ain.my.noteroomcategories.data_note.NoteEntity
 
-class CategoryViewModel(val myDatabase: MyDatabase) : ViewModel() {
+class MyViewModel(val myDatabase: MyDatabase) : ViewModel() {
     // ===================лист категорий=========================
     val categoryList = myDatabase.categoryDao.getAllCategories()
+    var categoryItemId:Int = -1
+    // ===================лист записей===========================
+    val noteList = myDatabase.noteDao.getAllNotesById(categoryItemId)
 
     //==================entity котегории ========================
     var categoryCheckItem: CategoriesEntity? = null
+    var noteCheckItem: NoteEntity? = null
 
     // =============== переменные состояния======================
     var nameState by mutableStateOf("")
+    var titleState by mutableStateOf("")
+    var descriptionState by mutableStateOf("")
+    var dialogState by mutableStateOf(false)
 
 
     fun insertCategory() = viewModelScope.launch {
@@ -33,6 +40,21 @@ class CategoryViewModel(val myDatabase: MyDatabase) : ViewModel() {
         categoryCheckItem = null
         nameState = ""
     }
+
+    fun insertNote() = viewModelScope.launch {
+        if (titleState.isNotEmpty()){
+            var item = noteCheckItem?.copy(title = titleState, description = descriptionState)?: NoteEntity(
+                title = titleState, description = descriptionState, categoryID = categoryItemId
+            )
+            myDatabase.noteDao.insertNotes(item)
+        }
+        noteCheckItem = null
+        titleState = ""
+        descriptionState =""
+    }
+
+
+
 
     fun deleteCategory(categoryEntity: CategoriesEntity) = viewModelScope.launch {
         myDatabase.categoryDao.deleteCategory(categoryEntity = categoryEntity)
@@ -47,7 +69,7 @@ class CategoryViewModel(val myDatabase: MyDatabase) : ViewModel() {
         val factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
                 val database = (checkNotNull(extras[APPLICATION_KEY]) as App).database
-                return CategoryViewModel(myDatabase = database) as T
+                return MyViewModel(myDatabase = database) as T
             }
         }
     }

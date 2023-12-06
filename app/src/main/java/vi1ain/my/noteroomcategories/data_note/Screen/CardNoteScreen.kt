@@ -15,16 +15,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import vi1ain.my.noteroomcategories.data_note.NoteEntity
 import vi1ain.my.noteroomcategories.ui.theme.MyStrings
 import vi1ain.my.noteroomcategories.ui.theme.Red220
 import vi1ain.my.noteroomcategories.ui.theme.While220
 
-@Preview(showBackground = true)
+
 @Composable
-fun CardScreen() {
+fun CardNoteScreen(noteItem: NoteEntity) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -48,7 +48,7 @@ fun CardScreen() {
                     fontWeight = FontWeight.Bold,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
-                    text = "title"
+                    text = noteItem.title
                 )
                 Text(
                     modifier = Modifier
@@ -58,7 +58,7 @@ fun CardScreen() {
                     maxLines = 2,
                     fontWeight = FontWeight.Normal,
                     overflow = TextOverflow.Ellipsis,
-                    text = "description"
+                    text = noteItem.description
                 )
 
 

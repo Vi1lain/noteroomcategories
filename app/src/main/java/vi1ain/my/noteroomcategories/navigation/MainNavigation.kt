@@ -5,21 +5,21 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import vi1ain.my.noteroomcategories.data_categories.CategoryViewModel
+import vi1ain.my.noteroomcategories.MyViewModel
 import vi1ain.my.noteroomcategories.data_categories.Screen.CategoriesScreen
 import vi1ain.my.noteroomcategories.data_note.Screen.NoteScreen
 
 @Composable
-fun MainNavigation(categoryViewModel: CategoryViewModel = viewModel(factory = CategoryViewModel.factory)) {
+fun MainNavigation(myViewModel: MyViewModel = viewModel(factory = MyViewModel.factory)) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Route.LIST_CATEGORIES) {
         composable(route = Route.LIST_CATEGORIES) {
             CategoriesScreen(
-                categoryViewModel = categoryViewModel,
+                myViewModel = myViewModel,
                 navController = navController
             )
         }
-        composable(route = Route.LIST_NOTES) {NoteScreen()}
+        composable(route = Route.LIST_NOTES) {NoteScreen(navController=navController,myViewModel=myViewModel)}
         //composable(route = Route.EDIT_NOTE) {}
     }
 

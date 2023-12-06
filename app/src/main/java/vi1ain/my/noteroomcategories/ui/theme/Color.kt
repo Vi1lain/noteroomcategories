@@ -13,8 +13,10 @@ val Pink40 = Color(0xFF7D5260)
 //============NEW COLOR==================
 
 val LightGreen220 = Color(0xFFE5F7D2)
+val MediumGreen220 = Color(0xFFB5FF67)
 val Green220 = Color(0xFF3E7900)
 val Purple220 = Color(0xFFB833FF)
 val LightPurple220 = Color(0xFFEBC7FF)
 val Red220 = Color(0xFFFF0303)
 val While220 = Color(0xFFFFFFFF)
+val Silver220 = Color(0xFFC9C9C9)

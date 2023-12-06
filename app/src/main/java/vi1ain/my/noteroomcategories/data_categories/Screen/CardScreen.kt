@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import vi1ain.my.noteroomcategories.MyViewModel
 import vi1ain.my.noteroomcategories.data_categories.CategoriesEntity
 import vi1ain.my.noteroomcategories.navigation.Route
 import vi1ain.my.noteroomcategories.ui.theme.MyStrings
@@ -28,14 +29,16 @@ import vi1ain.my.noteroomcategories.ui.theme.While220
 
 
 @Composable
-fun CardScreen(navController:NavHostController,
+fun CardScreen(
+    navController: NavHostController,
     categoryItem: CategoriesEntity,
     onClickDelete: (CategoriesEntity) -> Unit,
-    onClickEdit: (CategoriesEntity) -> Unit
+    onClickEdit: (CategoriesEntity) -> Unit,
+    myViewModel: MyViewModel
 ) {
     Card(
         modifier = Modifier
-            .clickable {
+            .clickable {myViewModel.categoryItemId = categoryItem.id!!
                 navController.navigate(Route.LIST_NOTES)
             }
             .fillMaxWidth()

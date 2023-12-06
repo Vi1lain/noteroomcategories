@@ -20,7 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
-import vi1ain.my.noteroomcategories.data_categories.CategoryViewModel
+import vi1ain.my.noteroomcategories.MyViewModel
 import vi1ain.my.noteroomcategories.ui.theme.Green220
 import vi1ain.my.noteroomcategories.ui.theme.LightGreen220
 import vi1ain.my.noteroomcategories.ui.theme.MyStrings
@@ -29,8 +29,8 @@ import vi1ain.my.noteroomcategories.ui.theme.While220
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun CategoriesScreen(categoryViewModel: CategoryViewModel, navController: NavHostController) {
-    val categoryList = categoryViewModel.categoryList.collectAsState(initial = emptyList())
+fun CategoriesScreen(myViewModel: MyViewModel, navController: NavHostController) {
+    val categoryList = myViewModel.categoryList.collectAsState(initial = emptyList())
     Scaffold {
         Column(
             modifier = Modifier
@@ -47,9 +47,9 @@ fun CategoriesScreen(categoryViewModel: CategoryViewModel, navController: NavHos
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = While220,
                     ),
-                    value = categoryViewModel.nameState,
-                    onValueChange = { text -> categoryViewModel.nameState = text })
-                IconButton(onClick = { categoryViewModel.insertCategory() }) {
+                    value = myViewModel.nameState,
+                    onValueChange = { text -> myViewModel.nameState = text })
+                IconButton(onClick = { myViewModel.insertCategory() }) {
                     Icon(
                         Icons.Default.Check,
                         contentDescription = MyStrings.ADD_CATEGORY,
@@ -59,11 +59,12 @@ fun CategoriesScreen(categoryViewModel: CategoryViewModel, navController: NavHos
             }
             LazyColumn(modifier = Modifier.fillMaxSize(), content = {
                 items(categoryList.value) { categoryItem ->
-                    CardScreen(navController = navController,
+                    CardScreen(navController = navController, myViewModel = myViewModel,
                         categoryItem = categoryItem,
-                        onClickDelete = { item -> categoryViewModel.deleteAllNotes(item) },
-                        onClickEdit = { item -> categoryViewModel.categoryCheckItem = item
-                            categoryViewModel.nameState = item.categoryName
+                        onClickDelete = { item -> myViewModel.deleteAllNotes(item) },
+                        onClickEdit = { item ->
+                            myViewModel.categoryCheckItem = item
+                            myViewModel.nameState = item.categoryName
                         }
                     )
                 }

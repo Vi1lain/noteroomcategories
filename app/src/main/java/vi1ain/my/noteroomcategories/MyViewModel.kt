@@ -12,12 +12,13 @@ import kotlinx.coroutines.launch
 import vi1ain.my.noteroomcategories.data_categories.CategoriesEntity
 import vi1ain.my.noteroomcategories.data_note.NoteEntity
 import vi1ain.my.noteroomcategories.ui.theme.MyStrings
+import vi1ain.my.noteroomcategories.utils.getCurrentTime
 
 class MyViewModel(val myDatabase: MyDatabase) : ViewModel() {
     // ===================лист категорий=========================
     val categoryList = myDatabase.categoryDao.getAllCategories()
-    var categoryItemId =-1
-    var nameCategory =MyStrings.TITLE
+    var categoryItemId = -1
+    var nameCategory = MyStrings.TITLE
     // ===================лист записей===========================
 
 
@@ -34,8 +35,8 @@ class MyViewModel(val myDatabase: MyDatabase) : ViewModel() {
 
     fun insertCategory() = viewModelScope.launch {
         if (nameState.isNotEmpty()) {
-            var item = categoryCheckItem?.copy(categoryName = nameState) ?: CategoriesEntity(
-                categoryName = nameState
+            val item = categoryCheckItem?.copy(categoryName = nameState) ?: CategoriesEntity(
+                categoryName = nameState, time = getCurrentTime()
             )
             myDatabase.categoryDao.insertCategory(item)
         }
@@ -44,19 +45,23 @@ class MyViewModel(val myDatabase: MyDatabase) : ViewModel() {
     }
 
     fun insertNote() = viewModelScope.launch {
-        if (titleState.isNotEmpty()){
-            var item = noteCheckItem?.copy(title = titleState, description = descriptionState)?: NoteEntity(
-                title = titleState, description = descriptionState, categoryID = categoryItemId
-            )
+        if (titleState.isNotEmpty()) {
+            val item = noteCheckItem?.copy(title = titleState, description = descriptionState)
+                ?: NoteEntity(
+                    title = titleState,
+                    description = descriptionState,
+                    categoryID = categoryItemId,
+                    isCheck = noteCheckItem?.isCheck ?: false
+                )
             myDatabase.noteDao.insertNotes(item)
         }
         noteCheckItem = null
         titleState = ""
-        descriptionState =""
+        descriptionState = ""
     }
 
-
-
+    fun checkedNote(noteEntity: NoteEntity) =
+        viewModelScope.launch { myDatabase.noteDao.insertNotes(noteEntity = noteEntity) }
 
     fun deleteCategory(categoryEntity: CategoriesEntity) = viewModelScope.launch {
         myDatabase.categoryDao.deleteCategory(categoryEntity = categoryEntity)
@@ -65,6 +70,7 @@ class MyViewModel(val myDatabase: MyDatabase) : ViewModel() {
     fun deleteAllNotes(categoryEntity: CategoriesEntity) = viewModelScope.launch {
         myDatabase.categoryDao.deleteAllNotes(categoryEntity = categoryEntity)
     }
+
     fun deleteNote(noteEntity: NoteEntity) = viewModelScope.launch {
         myDatabase.noteDao.deleteNotes(noteEntity = noteEntity)
     }

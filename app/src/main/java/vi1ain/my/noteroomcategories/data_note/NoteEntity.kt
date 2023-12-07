@@ -9,5 +9,6 @@ data class NoteEntity(
     val id:Int? = null,
     val title:String,
     val description:String,
-    val categoryID:Int
+    val categoryID:Int,
+    val isCheck:Boolean
 )

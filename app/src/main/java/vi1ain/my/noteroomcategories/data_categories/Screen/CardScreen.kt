@@ -92,7 +92,7 @@ fun CardScreen(
                 Text(modifier = Modifier
                     .padding( start = 7.dp)
                     ,
-                    text = "07.12.23 - 10:10",
+                    text = categoryItem.time,
                     style = TextStyle(color = Silver220),
                     fontSize = 12.sp
                 )

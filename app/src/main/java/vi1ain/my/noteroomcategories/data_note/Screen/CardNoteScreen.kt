@@ -9,6 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxColors
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -22,7 +25,10 @@ import androidx.navigation.NavHostController
 import vi1ain.my.noteroomcategories.MyViewModel
 import vi1ain.my.noteroomcategories.data_note.NoteEntity
 import vi1ain.my.noteroomcategories.navigation.Route
+import vi1ain.my.noteroomcategories.ui.theme.Green220
+import vi1ain.my.noteroomcategories.ui.theme.MediumGreen220
 import vi1ain.my.noteroomcategories.ui.theme.MyStrings
+import vi1ain.my.noteroomcategories.ui.theme.Purple220
 import vi1ain.my.noteroomcategories.ui.theme.Red220
 import vi1ain.my.noteroomcategories.ui.theme.While220
 
@@ -50,6 +56,14 @@ fun CardNoteScreen(
                 .fillMaxWidth()
                 .background(While220)
         ) {
+            Checkbox(colors = CheckboxDefaults.colors(
+                checkedColor = Purple220,
+                checkmarkColor = While220
+            ),
+                checked = noteItem.isCheck, onCheckedChange = { check ->
+                    noteItem.isCheck
+                    myViewModel.checkedNote(noteItem.copy(isCheck = check))
+                })
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -78,6 +92,7 @@ fun CardNoteScreen(
 
 
             }
+
             IconButton(onClick = { onClickDelete(noteItem) }) {
                 Icon(
                     tint = Red220,

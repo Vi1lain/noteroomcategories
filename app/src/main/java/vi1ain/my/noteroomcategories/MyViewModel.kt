@@ -11,12 +11,13 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import kotlinx.coroutines.launch
 import vi1ain.my.noteroomcategories.data_categories.CategoriesEntity
 import vi1ain.my.noteroomcategories.data_note.NoteEntity
+import vi1ain.my.noteroomcategories.ui.theme.MyStrings
 
 class MyViewModel(val myDatabase: MyDatabase) : ViewModel() {
     // ===================лист категорий=========================
     val categoryList = myDatabase.categoryDao.getAllCategories()
     var categoryItemId =-1
-    var nameCategory ="Title"
+    var nameCategory =MyStrings.TITLE
     // ===================лист записей===========================
 
 

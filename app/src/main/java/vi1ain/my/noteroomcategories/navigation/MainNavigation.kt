@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import vi1ain.my.noteroomcategories.MyViewModel
 import vi1ain.my.noteroomcategories.data_categories.Screen.CategoriesScreen
+import vi1ain.my.noteroomcategories.data_note.Screen.EditNote
 import vi1ain.my.noteroomcategories.data_note.Screen.NoteScreen
 
 @Composable
@@ -31,7 +32,7 @@ fun MainNavigation(myViewModel: MyViewModel = viewModel(factory = MyViewModel.fa
                 myViewModel = myViewModel
             )
         }
-        //composable(route = Route.EDIT_NOTE) {}
+        composable(route = Route.EDIT_NOTE) { EditNote(navController = navController,myViewModel= myViewModel) }
     }
 
 }

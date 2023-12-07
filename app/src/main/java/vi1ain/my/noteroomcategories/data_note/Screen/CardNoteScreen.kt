@@ -1,6 +1,7 @@
 package vi1ain.my.noteroomcategories.data_note.Screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,18 +18,32 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import vi1ain.my.noteroomcategories.MyViewModel
 import vi1ain.my.noteroomcategories.data_note.NoteEntity
+import vi1ain.my.noteroomcategories.navigation.Route
 import vi1ain.my.noteroomcategories.ui.theme.MyStrings
 import vi1ain.my.noteroomcategories.ui.theme.Red220
 import vi1ain.my.noteroomcategories.ui.theme.While220
 
 
 @Composable
-fun CardNoteScreen(noteItem: NoteEntity,onClickDelete:(NoteEntity)->Unit) {
+fun CardNoteScreen(
+    myViewModel: MyViewModel,
+    noteItem: NoteEntity,
+    onClickDelete: (NoteEntity) -> Unit,
+    navController: NavHostController
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp, start = 5.dp, end = 5.dp)
+            .clickable {
+                myViewModel.noteCheckItem = noteItem
+                myViewModel.titleState = noteItem.title
+                myViewModel.descriptionState = noteItem.description
+                navController.navigate(Route.EDIT_NOTE)
+            }
     ) {
         Row(
             modifier = Modifier
@@ -43,7 +58,7 @@ fun CardNoteScreen(noteItem: NoteEntity,onClickDelete:(NoteEntity)->Unit) {
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(top = 7.dp, start = 7.dp),
+                        .padding(top = 7.dp, start = 10.dp),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     overflow = TextOverflow.Ellipsis,
@@ -52,7 +67,7 @@ fun CardNoteScreen(noteItem: NoteEntity,onClickDelete:(NoteEntity)->Unit) {
                 )
                 Text(
                     modifier = Modifier
-                        .padding(top = 3.dp, start = 7.dp, bottom = 7.dp),
+                        .padding(top = 3.dp, start = 10.dp, bottom = 7.dp),
 
                     fontSize = 14.sp,
                     maxLines = 2,
@@ -63,7 +78,7 @@ fun CardNoteScreen(noteItem: NoteEntity,onClickDelete:(NoteEntity)->Unit) {
 
 
             }
-            IconButton(onClick = {onClickDelete(noteItem)}) {
+            IconButton(onClick = { onClickDelete(noteItem) }) {
                 Icon(
                     tint = Red220,
                     imageVector = Icons.Default.Delete,

@@ -12,4 +12,6 @@ object MyStrings{
     const val BUTTOM_BACK = "Back"
     const val BUTTOM_CLOSE = "Close"
     const val BUTTOM_OK = "Ok"
+    const val CANSEL_DELETION = "cansel deletion?"
+    const val RESTOR = "restore"
 }

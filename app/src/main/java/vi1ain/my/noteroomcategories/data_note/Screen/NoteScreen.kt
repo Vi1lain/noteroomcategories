@@ -16,10 +16,15 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -27,9 +32,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import vi1ain.my.noteroomcategories.MyViewModel
 import vi1ain.my.noteroomcategories.navigation.Route
+import vi1ain.my.noteroomcategories.ui.theme.Green220
 import vi1ain.my.noteroomcategories.ui.theme.LightGreen220
 import vi1ain.my.noteroomcategories.ui.theme.MediumGreen220
 import vi1ain.my.noteroomcategories.ui.theme.MyStrings
+import vi1ain.my.noteroomcategories.ui.theme.Red220
 import vi1ain.my.noteroomcategories.ui.theme.While220
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,6 +51,9 @@ fun NoteScreen(
     val noteList =
         myViewModel.myDatabase.noteDao.getAllNotesById(newID).collectAsState(initial = emptyList())
 
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+
     if (myViewModel.dialogState) {
         DialogController(
             myViewModel = myViewModel,
@@ -55,44 +65,56 @@ fun NoteScreen(
             }
         )
     }
-    Scaffold(topBar = {
-        CenterAlignedTopAppBar(
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = MediumGreen220),
-            navigationIcon = {
-                IconButton(onClick = {
-                    navController.popBackStack(
-                        route = Route.LIST_CATEGORIES,
-                        inclusive = false
-                    )
-                }) {
-                    Icon(
-                        modifier = Modifier
-                            //.clip(shape = CircleShape)
-                            .background(color = While220).padding(10.dp),
-                        //tint = Green220,
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = MyStrings.BUTTOM_BACK
-                    )
-                }
-            },
-            title = {
-                Text(
-                    text = myViewModel.nameCategory,
-                    //fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(snackbarHostState) { data ->
+                Snackbar(
+                    snackbarData = data,
+                    containerColor = Green220,
+                    contentColor = While220,
+                    actionColor = MediumGreen220
                 )
-            },
-        )
-    }, floatingActionButton = {
-        ExtendedFloatingActionButton(
-            containerColor = MediumGreen220,
-            onClick = { myViewModel.dialogState = true }) {
-            Icon(imageVector = Icons.Default.Add, contentDescription = MyStrings.ADD_CATEGORY)
-            Text(text = MyStrings.ADD)
-        }
-    }) {
+            }
+        },
+        topBar = {
+            CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MediumGreen220),
+                navigationIcon = {
+                    IconButton(onClick = {
+                        navController.popBackStack(
+                            route = Route.LIST_CATEGORIES,
+                            inclusive = false
+                        )
+                    }) {
+                        Icon(
+                            modifier = Modifier
+                                //.clip(shape = CircleShape)
+                                .background(color = While220)
+                                .padding(10.dp),
+                            //tint = Green220,
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = MyStrings.BUTTOM_BACK
+                        )
+                    }
+                },
+                title = {
+                    Text(
+                        text = myViewModel.nameCategory,
+                        //fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1
+                    )
+                },
+            )
+        }, floatingActionButton = {
+            ExtendedFloatingActionButton(
+                containerColor = MediumGreen220,
+                onClick = { myViewModel.dialogState = true }) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = MyStrings.ADD_CATEGORY)
+                Text(text = MyStrings.ADD)
+            }
+        }) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -100,9 +122,14 @@ fun NoteScreen(
             contentPadding = PaddingValues(bottom = 80.dp, top = 70.dp),
             content = {
                 items(noteList.value) { noteItem ->
-                    CardNoteScreen(navController = navController,
+                    CardNoteScreen(
+                        scope = scope,
+                        snackbarHostState = snackbarHostState,
+                        navController = navController,
                         noteItem = noteItem,
-                        onClickDelete = { note -> myViewModel.deleteNote(note) }, myViewModel = myViewModel)
+                        onClickDelete = { note -> myViewModel.deleteNote(note) },
+                        myViewModel = myViewModel
+                    )
                 }
             })
     }

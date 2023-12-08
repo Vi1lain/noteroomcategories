@@ -10,10 +10,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,11 +24,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import vi1ain.my.noteroomcategories.MyViewModel
 import vi1ain.my.noteroomcategories.data_note.NoteEntity
 import vi1ain.my.noteroomcategories.navigation.Route
-import vi1ain.my.noteroomcategories.ui.theme.Green220
-import vi1ain.my.noteroomcategories.ui.theme.MediumGreen220
 import vi1ain.my.noteroomcategories.ui.theme.MyStrings
 import vi1ain.my.noteroomcategories.ui.theme.Purple220
 import vi1ain.my.noteroomcategories.ui.theme.Red220
@@ -38,7 +40,9 @@ fun CardNoteScreen(
     myViewModel: MyViewModel,
     noteItem: NoteEntity,
     onClickDelete: (NoteEntity) -> Unit,
-    navController: NavHostController
+    navController: NavHostController,
+    scope: CoroutineScope,
+    snackbarHostState: SnackbarHostState
 ) {
     Card(
         modifier = Modifier
@@ -93,7 +97,22 @@ fun CardNoteScreen(
 
             }
 
-            IconButton(onClick = { onClickDelete(noteItem) }) {
+            IconButton(onClick = {
+                scope.launch {
+                    val result = snackbarHostState.showSnackbar(
+                        message = MyStrings.CANSEL_DELETION,
+                        actionLabel = MyStrings.RESTOR,
+                        withDismissAction = true,
+                        duration = SnackbarDuration.Short
+                    )
+                    if (result == SnackbarResult.ActionPerformed) {
+                        myViewModel.snackBarItem(noteItem)
+                    }
+                }
+
+
+                onClickDelete(noteItem)
+            }) {
                 Icon(
                     tint = Red220,
                     imageVector = Icons.Default.Delete,

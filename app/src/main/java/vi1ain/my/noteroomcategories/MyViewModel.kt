@@ -59,7 +59,9 @@ class MyViewModel(val myDatabase: MyDatabase) : ViewModel() {
         titleState = ""
         descriptionState = ""
     }
-
+    fun snackBarItem(note:NoteEntity) = viewModelScope.launch {
+        myDatabase.noteDao.insertNotes(noteEntity = note)
+    }
     fun checkedNote(noteEntity: NoteEntity) =
         viewModelScope.launch { myDatabase.noteDao.insertNotes(noteEntity = noteEntity) }
 

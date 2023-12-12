@@ -37,6 +37,7 @@ fun DialogController(
                         unfocusedContainerColor = While220,
                         disabledContainerColor = While220,
                     ),
+                    maxLines= 3,
                     label = { Text(color = Silver220, text = MyStrings.TITLE) },
                     value = myViewModel.titleState,
                     onValueChange = { text -> myViewModel.titleState = text })
@@ -46,6 +47,7 @@ fun DialogController(
                         unfocusedContainerColor = While220,
                         disabledContainerColor = While220,
                     ),
+                    maxLines= 3,
                     label = { Text(color = Silver220, text = MyStrings.DESCRIPTION) },
                     value = myViewModel.descriptionState,
                     onValueChange = { text -> myViewModel.descriptionState = text })

@@ -6,6 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
@@ -84,7 +87,7 @@ fun CardNoteScreen(
                     text = noteItem.title
                 )
                 Text(
-                    modifier = Modifier
+                    modifier = Modifier.wrapContentHeight().wrapContentHeight()
                         .padding(top = 3.dp, start = 10.dp, bottom = 7.dp),
 
                     fontSize = 14.sp,
